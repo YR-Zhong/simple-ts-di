@@ -1,0 +1,6 @@
+fileignoreconfig:
+- filename: src/container.ts
+  checksum: f0b157494af293d3741737771b4e560508ceffcdb959d59a9a74d97821bc2345
+- filename: yarn.lock
+  checksum: eef4a1ec75f2ff040163125ff0f655159cb336949aed02b31f1009b0a66f7f2c
+version: "1.0"

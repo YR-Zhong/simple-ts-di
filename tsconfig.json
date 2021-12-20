@@ -1,0 +1,21 @@
+{
+  "exclude": ["./node_modules/*"],
+  "include": ["src/**/*.ts", "tests/**/.ts"],
+  "compilerOptions": {
+    "target": "ES5",
+    "experimentalDecorators": true,
+    "types": ["jest", "node"],
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "allowJs": true,
+    "isolatedModules": false,
+    "sourceMap": true
+  }
+}
