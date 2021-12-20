@@ -35,10 +35,13 @@ class IocContainer<T> {
     }
     const instance = Reflect.construct(injectableClass, []);
     Object.entries(dependency).forEach(([key, { name, value }]) => {
+      console.log(container.get(value));
       instance[key] = name
         ? (instance[key] = container
             .get(value)
-            .find(({ name: dependencyName }) => dependencyName === name).value)
+            .find(
+              ({ namedAnnotation: dependencyName }) => dependencyName === name
+            ).value)
         : container.get(value);
     });
     return instance;
