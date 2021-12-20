@@ -1,11 +1,9 @@
 import { Inject, InjectNamedProperty, InjectNamedClass } from "../src";
-import { IocContainer } from "../src/container";
+import { iocContainer } from "../src/container";
 
 describe("DI test", () => {
-  const iocContainer = new IocContainer();
-
   afterEach(() => {
-    iocContainer.map.clear();
+    iocContainer.clearDependency();
   });
 
   it("should bind instance", () => {

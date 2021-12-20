@@ -1,26 +1,31 @@
 import "reflect-metadata";
 
-import { INJECT, INJECT_WITH_NAME } from "./index";
+import { INJECT, INJECT_WITH_NAME } from "./annotation";
 
 type Constructor<T = any> = new (...args: any[]) => T;
 
-export class IocContainer<T> {
-  public map = new Map<Constructor<T>, any>();
-
+const container = new Map();
+class IocContainer<T> {
   bind(key: Constructor<T>, value: any) {
     const constructorInstance = new value.constructor();
-    const name = Reflect.getMetadata(INJECT_WITH_NAME, constructorInstance);
-    if (!name) {
-      this.map.set(key, value);
+    const namedAnnotation = Reflect.getMetadata(
+      INJECT_WITH_NAME,
+      constructorInstance
+    );
+    if (!namedAnnotation) {
+      container.set(key, value);
       return;
     }
 
-    const namedDependency = this.map.get(key);
-    this.map.set(key, [...(namedDependency || []), { name, value }]);
+    const namedDependency = container.get(key);
+    container.set(key, [
+      ...(namedDependency || []),
+      { namedAnnotation, value },
+    ]);
   }
 
   get(dependencyClass: Constructor<T>): any {
-    const injectableClass = this.map.get(dependencyClass);
+    const injectableClass = container.get(dependencyClass);
     const dependency: Record<string, any> = Reflect.getMetadata(
       INJECT,
       injectableClass
@@ -31,11 +36,17 @@ export class IocContainer<T> {
     const instance = Reflect.construct(injectableClass, []);
     Object.entries(dependency).forEach(([key, { name, value }]) => {
       instance[key] = name
-        ? (instance[key] = this.map
+        ? (instance[key] = container
             .get(value)
             .find(({ name: dependencyName }) => dependencyName === name).value)
-        : this.map.get(value);
+        : container.get(value);
     });
     return instance;
   }
+
+  clearDependency(): void {
+    container.clear();
+  }
 }
+
+export const iocContainer = new IocContainer();

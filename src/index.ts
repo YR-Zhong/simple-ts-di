@@ -1,8 +1,5 @@
 import "reflect-metadata";
-
-export const INJECT = "inject";
-export const INJECT_WITH_NAME = "inject_with_name";
-
+import { INJECT, INJECT_WITH_NAME } from "./annotation";
 export function Inject() {
   return (target: any, dependencyName: string) => {
     const { constructor } = target;
